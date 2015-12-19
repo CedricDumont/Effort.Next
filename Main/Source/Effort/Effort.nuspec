@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>Effort-Next</title>
+    <authors>Dumont Cedric</authors>
+    <owners>Dumont Cedric</owners>
+    <projectUrl></projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description></description>
+    <summary></summary>
+    <copyright>Copyright 2015</copyright>
+    <tags>.NET</tags> </metadata>
+  <files />
+</package>
