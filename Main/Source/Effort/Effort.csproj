@@ -344,6 +344,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="Effort.nuspec" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
