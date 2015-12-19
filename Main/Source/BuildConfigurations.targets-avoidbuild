@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Entity Framework 6 -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_ef6_net40|AnyCPU' ">
+	<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+	<PackagePlatformDir>net40</PackagePlatformDir>
+	<PackageEntityFrameworkDir>$(PackageEF61Dir)</PackageEntityFrameworkDir>
+	<ExternalEntityFramework>true</ExternalEntityFramework>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug_ef6_net40\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NET40;EF6;EF61</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_ef6_net40|AnyCPU' ">
+	<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+	<PackagePlatformDir>net40</PackagePlatformDir>
+	<PackageEntityFrameworkDir>$(PackageEF61Dir)</PackageEntityFrameworkDir>
+	<ExternalEntityFramework>true</ExternalEntityFramework>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release_ef6_net40\</OutputPath>
+    <DefineConstants>TRACE;NET40;EF6;EF61</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>	
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_ef6_net45|AnyCPU' ">
+	<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+	<PackagePlatformDir>net45</PackagePlatformDir>
+	<PackageEntityFrameworkDir>$(PackageEF61Dir)</PackageEntityFrameworkDir>
+	<ExternalEntityFramework>true</ExternalEntityFramework>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug_ef6_net45\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NET45;EF6;EF61</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_ef6_net45|AnyCPU' ">
+	<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+	<PackagePlatformDir>net45</PackagePlatformDir>
+	<PackageEntityFrameworkDir>$(PackageEF61Dir)</PackageEntityFrameworkDir>
+	<ExternalEntityFramework>true</ExternalEntityFramework>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release_ef6_net45\</OutputPath>
+    <DefineConstants>TRACE;NET45;EF6;EF61</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- Entity Framework before version 6 -->
+  <!-- The required dependencies are included in the .NET framework -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_pre-ef6_net40|AnyCPU' ">
+	<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+	<PackagePlatformDir>net40</PackagePlatformDir>
+	<PackageEntityFrameworkDir>$(PackageEF5Dir)</PackageEntityFrameworkDir>
+	<ExternalEntityFramework>false</ExternalEntityFramework>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug_pre-ef6_net40\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NET40;EFOLD</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_pre-ef6_net40|AnyCPU' ">
+	<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+	<PackagePlatformDir>net40</PackagePlatformDir>
+	<PackageEntityFrameworkDir>$(PackageEF5Dir)</PackageEntityFrameworkDir>
+	<ExternalEntityFramework>false</ExternalEntityFramework>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release_pre-ef6_net40\</OutputPath>
+    <DefineConstants>TRACE;NET40;EFOLD</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>	
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_pre-ef6_net45|AnyCPU' ">
+	<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+	<PackagePlatformDir>net45</PackagePlatformDir>
+	<PackageEntityFrameworkDir>$(PackageEF5Dir)</PackageEntityFrameworkDir>
+	<ExternalEntityFramework>false</ExternalEntityFramework>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug_pre-ef6_net45\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NET45;EFOLD</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release_pre-ef6_net45|AnyCPU' ">
+	<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+	<PackagePlatformDir>net45</PackagePlatformDir>
+	<PackageEntityFrameworkDir>$(PackageEF5Dir)</PackageEntityFrameworkDir>
+	<ExternalEntityFramework>false</ExternalEntityFramework>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release_pre-ef6_net45\</OutputPath>
+    <DefineConstants>TRACE;NET45;EFOLD</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+</Project>
