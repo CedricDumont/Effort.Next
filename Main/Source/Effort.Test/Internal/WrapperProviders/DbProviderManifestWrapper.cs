@@ -10,8 +10,8 @@
 namespace Effort.Test.Internal.WrapperProviders
 {
 #if !EFOLD
-    using System.Data.Entity.Core.Common;
-    using System.Data.Entity.Core.Metadata.Edm;
+    //using System.Data.Entity.Core.Common;
+    //using System.Data.Entity.Core.Metadata.Edm;
 #else
     using System.Data.Common;
     using System.Data.Metadata.Edm;
@@ -19,6 +19,8 @@ namespace Effort.Test.Internal.WrapperProviders
     using System.Xml;
     using System.Xml.Linq;
     using System.Collections.ObjectModel;
+    using System.Data.Common;
+    using System.Data.Metadata.Edm;
 
     /// <summary>
     /// Wrapper for <see cref="DbProviderManifest"/> objects.

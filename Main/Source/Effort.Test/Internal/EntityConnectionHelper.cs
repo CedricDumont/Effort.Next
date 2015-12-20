@@ -50,7 +50,7 @@ namespace Effort.Test.Internal
     {
         static EntityConnectionHelper()
         {
-            DataReaderInspectorProviderConfiguration.RegisterProvider();
+            //DataReaderInspectorProviderConfiguration.RegisterProvider();
             EffortProviderConfiguration.RegisterProvider();
         }
 

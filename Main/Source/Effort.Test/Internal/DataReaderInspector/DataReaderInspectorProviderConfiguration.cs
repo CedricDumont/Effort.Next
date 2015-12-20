@@ -40,54 +40,54 @@ namespace Effort.Test.Internal.DataReaderInspector
         private static bool registered = false;
         private static object sync = new object();
 
-        public static void RegisterProvider()
-        {
-            if (!registered)
-            {
-                lock (sync)
-                {
-                    if (!registered)
-                    {
-                        DbProviderFactoryBase.RegisterProvider(
-                            "Data Reader Inspector Provider", 
-                            ProviderInvariantName, 
-                            "Inspect DbDataReader result", 
-                            typeof(DataReaderInspectorProviderFactory));
+        //public static void RegisterProvider()
+        //{
+        //    if (!registered)
+        //    {
+        //        lock (sync)
+        //        {
+        //            if (!registered)
+        //            {
+        //                DbProviderFactoryBase.RegisterProvider(
+        //                    "Data Reader Inspector Provider", 
+        //                    ProviderInvariantName, 
+        //                    "Inspect DbDataReader result", 
+        //                    typeof(DataReaderInspectorProviderFactory));
 
-                        RegisterEFServices();
+        //                RegisterEFServices();
 
-                        Thread.MemoryBarrier();
-                        registered = true;
-                    }
-                }
-            }
-        }
+        //                Thread.MemoryBarrier();
+        //                registered = true;
+        //            }
+        //        }
+        //    }
+        //}
 
         private static void RegisterEFServices()
         {
 #if !EFOLD
-            DbConfiguration.Loaded += OnDbConfigurationLoaded;
+            //DbConfiguration.Loaded += OnDbConfigurationLoaded;
 #endif
         }
 
         
 #if !EFOLD
-        private static void OnDbConfigurationLoaded(
-            object sender, 
-            DbConfigurationLoadedEventArgs e)
-        {
-            e.AddDependencyResolver(
-                new SingletonDependencyResolver<DbProviderServices>(
-                    DataReaderInspectorProviderServices.Instance,
-                    ProviderInvariantName),
-                false);
+        //private static void OnDbConfigurationLoaded(
+        //    object sender, 
+        //    DbConfigurationLoadedEventArgs e)
+        //{
+        //    e.AddDependencyResolver(
+        //        new SingletonDependencyResolver<DbProviderServices>(
+        //            DataReaderInspectorProviderServices.Instance,
+        //            ProviderInvariantName),
+        //        false);
 
-            e.AddDependencyResolver(
-                new SingletonDependencyResolver<IProviderInvariantName>(
-                        DataReaderInspectorInvariantName.Instance,
-                        DataReaderInspectorProviderFactory.Instance),
-                false);
-        }
+        //    e.AddDependencyResolver(
+        //        new SingletonDependencyResolver<IProviderInvariantName>(
+        //                DataReaderInspectorInvariantName.Instance,
+        //                DataReaderInspectorProviderFactory.Instance),
+        //        false);
+        //}
 #endif
     }
 }

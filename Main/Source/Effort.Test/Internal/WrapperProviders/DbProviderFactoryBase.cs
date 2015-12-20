@@ -14,7 +14,7 @@ namespace Effort.Test.Internal.WrapperProviders
     using System.Data;
     using System.Data.Common;
 #if !EFOLD
-    using System.Data.Entity.Core.Common;
+   // using System.Data.Entity.Core.Common;
 #endif
     using System.Diagnostics.Contracts;
     using System.Linq;
@@ -24,13 +24,13 @@ namespace Effort.Test.Internal.WrapperProviders
     /// </summary>
     internal abstract class DbProviderFactoryBase : DbProviderFactory, IServiceProvider
     {
-        private DbProviderServices services;
+        private System.Data.Entity.Core.Common.DbProviderServices services;
 
         /// <summary>
         /// Initializes a new instance of the DbProviderFactoryBase class.
         /// </summary>
         /// <param name="providerServices">The provider services.</param>
-        protected DbProviderFactoryBase(DbProviderServices providerServices)
+        protected DbProviderFactoryBase(System.Data.Entity.Core.Common.DbProviderServices providerServices)
         {
             this.services = providerServices;
         }

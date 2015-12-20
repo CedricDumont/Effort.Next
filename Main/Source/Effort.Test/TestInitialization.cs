@@ -33,7 +33,7 @@ namespace Effort.Test
         public static void Initialize()
         {
             Effort.Provider.EffortProviderConfiguration.RegisterProvider();
-            Effort.Test.Internal.DataReaderInspector.DataReaderInspectorProviderConfiguration.RegisterProvider();
+           // Effort.Test.Internal.DataReaderInspector.DataReaderInspectorProviderConfiguration.RegisterProvider();
         }
     }
 }

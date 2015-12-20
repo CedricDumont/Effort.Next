@@ -11,9 +11,10 @@ namespace Effort.Test.Internal.WrapperProviders
 {
     using System;
     using System.Data.Common;
+    using System.Data.Common.CommandTrees;
 #if !EFOLD
-    using System.Data.Entity.Core.Common;
-    using System.Data.Entity.Core.Common.CommandTrees;
+    //using System.Data.Entity.Core.Common;
+    //using CommandTrees;
 #else
     using System.Data.Common.CommandTrees;
 #endif

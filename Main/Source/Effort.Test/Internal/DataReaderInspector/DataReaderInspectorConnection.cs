@@ -54,12 +54,12 @@ namespace Effort.Test.Internal.DataReaderInspector
             }
         }
 
-        protected override DbProviderFactory DbProviderFactory
-        {
-            get
-            {
-                return DataReaderInspectorProviderFactory.Instance;
-            }
-        }
+        //protected override DbProviderFactory DbProviderFactory
+        //{
+        //    get
+        //    {
+        //        return DataReaderInspectorProviderFactory.Instance;
+        //    }
+        //}
     }
 }
