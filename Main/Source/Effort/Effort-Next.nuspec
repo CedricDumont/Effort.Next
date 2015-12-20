@@ -8,9 +8,9 @@
     <owners>Dumont Cedric</owners>
     <projectUrl></projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description></description>
-    <summary></summary>
-    <copyright>Copyright 2015</copyright>
+    <description>Added Features to Effort project. so that it is immediatly available as nuget package before Pull requests...</description>
+    <summary>Added Features to Effort project</summary>
+    <copyright>Copyright</copyright>
     <tags>.NET</tags> </metadata>
   <files />
 </package>
