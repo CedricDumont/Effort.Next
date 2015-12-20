@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Effort", "Effort\Effort.csproj", "{E612D252-9081-4995-B717-5DBEF8240FB6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_ef6_net40|Any CPU = Debug_ef6_net40|Any CPU
+		Debug_ef6_net45|Any CPU = Debug_ef6_net45|Any CPU
+		Debug_pre-ef6_net40|Any CPU = Debug_pre-ef6_net40|Any CPU
+		Debug_pre-ef6_net45|Any CPU = Debug_pre-ef6_net45|Any CPU
+		Release_ef6_net40|Any CPU = Release_ef6_net40|Any CPU
+		Release_ef6_net45|Any CPU = Release_ef6_net45|Any CPU
+		Release_pre-ef6_net40|Any CPU = Release_pre-ef6_net40|Any CPU
+		Release_pre-ef6_net45|Any CPU = Release_pre-ef6_net45|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E612D252-9081-4995-B717-5DBEF8240FB6}.Debug_ef6_net40|Any CPU.ActiveCfg = Debug_ef6_net40|Any CPU
+		{E612D252-9081-4995-B717-5DBEF8240FB6}.Debug_ef6_net40|Any CPU.Build.0 = Debug_ef6_net40|Any CPU
+		{E612D252-9081-4995-B717-5DBEF8240FB6}.Debug_ef6_net45|Any CPU.ActiveCfg = Debug_ef6_net45|Any CPU
+		{E612D252-9081-4995-B717-5DBEF8240FB6}.Debug_ef6_net45|Any CPU.Build.0 = Debug_ef6_net45|Any CPU
+		{E612D252-9081-4995-B717-5DBEF8240FB6}.Debug_pre-ef6_net40|Any CPU.ActiveCfg = Debug_pre-ef6_net40|Any CPU
+		{E612D252-9081-4995-B717-5DBEF8240FB6}.Debug_pre-ef6_net40|Any CPU.Build.0 = Debug_pre-ef6_net40|Any CPU
+		{E612D252-9081-4995-B717-5DBEF8240FB6}.Debug_pre-ef6_net45|Any CPU.ActiveCfg = Debug_pre-ef6_net45|Any CPU
+		{E612D252-9081-4995-B717-5DBEF8240FB6}.Debug_pre-ef6_net45|Any CPU.Build.0 = Debug_pre-ef6_net45|Any CPU
+		{E612D252-9081-4995-B717-5DBEF8240FB6}.Release_ef6_net40|Any CPU.ActiveCfg = Release_ef6_net40|Any CPU
+		{E612D252-9081-4995-B717-5DBEF8240FB6}.Release_ef6_net40|Any CPU.Build.0 = Release_ef6_net40|Any CPU
+		{E612D252-9081-4995-B717-5DBEF8240FB6}.Release_ef6_net45|Any CPU.ActiveCfg = Release_ef6_net45|Any CPU
+		{E612D252-9081-4995-B717-5DBEF8240FB6}.Release_ef6_net45|Any CPU.Build.0 = Release_ef6_net45|Any CPU
+		{E612D252-9081-4995-B717-5DBEF8240FB6}.Release_pre-ef6_net40|Any CPU.ActiveCfg = Release_pre-ef6_net40|Any CPU
+		{E612D252-9081-4995-B717-5DBEF8240FB6}.Release_pre-ef6_net40|Any CPU.Build.0 = Release_pre-ef6_net40|Any CPU
+		{E612D252-9081-4995-B717-5DBEF8240FB6}.Release_pre-ef6_net45|Any CPU.ActiveCfg = Release_pre-ef6_net45|Any CPU
+		{E612D252-9081-4995-B717-5DBEF8240FB6}.Release_pre-ef6_net45|Any CPU.Build.0 = Release_pre-ef6_net45|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

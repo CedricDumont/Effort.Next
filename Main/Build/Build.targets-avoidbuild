@@ -1,0 +1,215 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="default">
+  <PropertyGroup>
+    <BaseDir>$(MSBuildProjectDirectory)\..</BaseDir>
+    <TempDir>$(MSBuildProjectDirectory)\_temp</TempDir>
+    <PackageDir>$(MSBuildProjectDirectory)\Packages</PackageDir>
+    <SolutionDir>$(BaseDir)\Source</SolutionDir>
+    <EffortNugetPackageDir>EffortNuget</EffortNugetPackageDir>
+    <EffortZipPackageDir>EffortZip</EffortZipPackageDir>
+
+    <SignAssembly Condition="$(SignAssembly) == ''">False</SignAssembly>
+    <RunTests Condition="$(RunTests) == ''">False</RunTests>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <CompileConfig Include="Release_pre-ef6_net40">
+      <NugetPack>Effort</NugetPack>
+      <NugetDir>lib\net40</NugetDir>
+      <ZipDir>.NET 4.0\Entity Framework 4-5</ZipDir>
+      <Runtime>net-4.0</Runtime>
+    </CompileConfig>
+    <CompileConfig Include="Release_pre-ef6_net45">
+      <NugetPack>Effort</NugetPack>
+      <NugetDir>lib\net45</NugetDir>
+      <ZipDir>.NET 4.5\Entity Framework 4-5</ZipDir>
+      <Runtime>net-4.5</Runtime>
+    </CompileConfig>
+    <CompileConfig Include="Release_ef6_net40">
+      <NugetPack>Effort.EF6</NugetPack>
+      <NugetDir>lib\net40</NugetDir>
+      <ZipDir>.NET 4.0\Entity Framework 6</ZipDir>
+      <Runtime>net-4.0</Runtime>
+    </CompileConfig>
+    <CompileConfig Include="Release_ef6_net45">
+      <NugetPack>Effort.EF6</NugetPack>
+      <NugetDir>lib\net45</NugetDir>
+      <ZipDir>.NET 4.5\Entity Framework 6</ZipDir>
+      <Runtime>net-4.5</Runtime>
+    </CompileConfig>
+    
+    <NugetConfig Include="Effort">
+      <Spec>Effort.nuspec</Spec>
+    </NugetConfig>
+    <NugetConfig Include="Effort.EF6">
+      <Spec>Effort.EF6.nuspec</Spec>
+    </NugetConfig>
+  </ItemGroup>
+
+  <Target 
+    Name="default" 
+    DependsOnTargets="
+      Initialize; 
+      Compile; 
+      RunTests; 
+      Collect; 
+      NugetPackage; 
+      ZipPackage; 
+      Cleanup" />
+
+  <Target Name="Initialize">
+    <RemoveDir Directories="$(TempDir)" />
+    <RemoveDir Directories="$(PackageDir)" />
+    <MakeDir Directories="$(PackageDir)" />
+  </Target>
+
+  <Target Name="Compile" Outputs="%(CompileConfig.Identity)">
+    <PropertyGroup>
+      <SigningKeyDir>$(BaseDir)\Build</SigningKeyDir>
+      <PublicKey>$(SigningKeyDir)\PublicKey.snk</PublicKey>
+      <KeyPair>$(SigningKeyDir)\KeyPair.snk</KeyPair>
+      <KeyPairAvailable>False</KeyPairAvailable>
+      <KeyPairAvailable Condition="Exists('$(KeyPair)')">True</KeyPairAvailable>
+      <KeyFile Condition="$(KeyPairAvailable)">$(KeyPair)</KeyFile>
+      <KeyFile Condition="!$(KeyPairAvailable)">$(PublicKey)</KeyFile>
+      <DelaySign>True</DelaySign>
+      <DelaySign Condition="$(KeyPairAvailable)">False</DelaySign>
+       
+      <BuildProperties>
+        Configuration=%(CompileConfig.Identity);
+      </BuildProperties>
+    
+      <BuildProperties Condition="$(SignAssembly)">
+        $(BuildProperties)
+        SignAssembly=True;
+        DelaySign=$(DelaySign);
+        AssemblyOriginatorKeyFile=$(KeyFile);
+      </BuildProperties>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <BuildProjects Include="$(SolutionDir)\Effort\Effort.csproj" />
+      <BuildProjects Include="$(SolutionDir)\Effort.Test.Data\Effort.Test.Data.csproj" Condition="$(RunTests)=='True'" />
+      <BuildProjects Include="$(SolutionDir)\Effort.Test\Effort.Test.csproj" Condition="$(RunTests)=='True'" />
+    </ItemGroup>
+
+    <RemoveDir Directories="$(SolutionDir)\Effort\bin\%(CompileConfig.Identity)\" />
+    <RemoveDir Directories="$(SolutionDir)\Effort.Test.Data\bin\%(CompileConfig.Identity)\" />
+    <RemoveDir Directories="$(SolutionDir)\Effort.Test\bin\%(CompileConfig.Identity)\" />
+    
+    <Message 
+      Importance="High" 
+      Text="Build task with &quot;%(CompileConfig.Identity)&quot; configuration" />
+    
+    <Message 
+      Importance="High" 
+      Text="Assembly signing is enabled" 
+      Condition="$(SignAssembly)" />
+    
+    <Message 
+      Importance="High" 
+      Text="Key pair was not found, executing delayed signing" 
+      Condition="$(SignAssembly) And ! $(KeyPairAvailable)" />
+
+    <MSBuild Projects="@(BuildProjects)" Properties="$(BuildProperties)" />
+
+    <Exec 
+      Command="&quot;$(SolutionDir)\.nuget\NuGet.exe&quot; install &quot;$(SolutionDir)\.nuget\packages.config&quot;"
+      WorkingDirectory="$(SolutionDir)\packages" />
+  </Target>
+
+  <Target Name="RunTests" Condition="$(RunTests)=='True'" Outputs="%(CompileConfig.Identity)">
+    <PropertyGroup>
+      <TestSuccess>1</TestSuccess>
+    </PropertyGroup>
+    
+    <Message 
+      Importance="High" 
+      Text="Run tests (%(CompileConfig.Identity))" />
+    <Exec Command="&quot;$(SolutionDir)\packages\NUnit.Runners.2.6.3\tools\nunit-console.exe&quot; &quot;$(SolutionDir)\Effort.Test\bin\%(CompileConfig.Identity)\Effort.Test.dll&quot; /nologo /framework:%(CompileConfig.Runtime)">
+      <Output TaskParameter="ExitCode" PropertyName="TestSuccess"/>
+    </Exec>
+    <Error Text="One or more tests failed" Condition="'$(TestSuccess)'!='0'" />
+  </Target>
+
+  <Target Name="Collect" Outputs="%(CompileConfig.Identity)">
+    <PropertyGroup>
+      <SourceDir>$(SolutionDir)\Effort\bin\%(CompileConfig.Identity)</SourceDir>
+      <DestinationDirNuget>$(TempDir)\$(EffortNugetPackageDir)\%(CompileConfig.NugetPack)\%(CompileConfig.NugetDir)</DestinationDirNuget>
+      <DestinationDirZip>$(TempDir)\$(EffortZipPackageDir)\%(CompileConfig.ZipDir)</DestinationDirZip>
+    </PropertyGroup>
+    <ItemGroup>
+      <SourceFilesCommon Include="$(SourceDir)\Effort.dll"/>
+      <SourceFilesCommon Include="$(SourceDir)\Effort.xml"/>
+      <SourceFilesZip Include="$(SourceDir)\NMemory.dll"/>
+    </ItemGroup>
+    <Copy Condition="%(CompileConfig.NugetDir) != ''"
+          SourceFiles="@(SourceFilesCommon)"
+          DestinationFolder="$(DestinationDirNuget)" />
+    
+    <Copy Condition="%(CompileConfig.ZipDir) != ''"
+          SourceFiles="@(SourceFilesCommon)"
+          DestinationFolder="$(DestinationDirZip)" />
+    <Copy Condition="%(CompileConfig.ZipDir) != ''"
+          SourceFiles="@(SourceFilesZip)"
+          DestinationFolder="$(DestinationDirZip)" />
+  </Target>
+
+  <Target Name="NugetPackage" Outputs="%(NugetConfig.Identity)">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\%(NugetConfig.Spec)"
+          DestinationFolder="$(TempDir)\$(EffortNugetPackageDir)\%(NugetConfig.Identity)" />
+
+    <Exec WorkingDirectory="$(TempDir)\$(EffortNugetPackageDir)\%(NugetConfig.Identity)"
+          Command="&quot;$(SolutionDir)\.nuget\nuget.exe&quot; pack &quot;%(NugetConfig.Spec)&quot;" />
+
+    <ItemGroup>
+      <NugetPackages Include="$(TempDir)\$(EffortNugetPackageDir)\%(NugetConfig.Identity)\*.nupkg"/>
+    </ItemGroup>
+    
+    <Move SourceFiles="@(NugetPackages)"
+          DestinationFolder="$(PackageDir)" />
+  </Target>
+
+  <Target Name="ZipPackage">
+    <CreateZip
+        InputDirectory="$(TempDir)\$(EffortZipPackageDir)"
+        OutputFile="$(PackageDir)\Library.zip" />
+  </Target>
+
+  <Target Name="Cleanup">
+    <RemoveDir Directories="$(TempDir)" />
+  </Target>
+
+  <UsingTask TaskName="CreateZip"
+      TaskFactory="CodeTaskFactory"
+      AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <InputDirectory ParameterType="System.String" Required="true" />
+      <OutputFile ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System.Core" />
+      <Reference Include="System.IO.Compression.FileSystem" />
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.IO.Compression" />
+      <Using Namespace="Microsoft.Build.Framework" />
+      <Using Namespace="Microsoft.Build.Utilities" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+          try {
+            InputDirectory = Path.GetFullPath(InputDirectory);
+            OutputFile = Path.GetFullPath(OutputFile);
+                    
+            ZipFile.CreateFromDirectory(InputDirectory, OutputFile);
+                    
+            return true;
+          }
+          catch (Exception ex) {
+            Log.LogErrorFromException(ex);
+            return false;
+          }
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+</Project>
