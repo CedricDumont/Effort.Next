@@ -17,6 +17,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug_ef6_net40|AnyCPU'">
     <Prefer32Bit>false</Prefer32Bit>
+    <DefineConstants>DEBUG;TRACE;NET40;EF6;EF61</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug_ef6_net45|AnyCPU'">
     <Prefer32Bit>false</Prefer32Bit>
