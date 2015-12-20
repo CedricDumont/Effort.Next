@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Effort</RootNamespace>
-    <AssemblyName>Effort-Next</AssemblyName>
+    <AssemblyName>Effort.Next</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -344,7 +344,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="Effort-Next.nuspec" />
+    <None Include="Effort.Next.nuspec" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
