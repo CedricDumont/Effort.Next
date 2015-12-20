@@ -20,9 +20,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug_ef6_net40|AnyCPU'">
     <Prefer32Bit>false</Prefer32Bit>
+    <NoWarn>1591</NoWarn>
+    <OutputPath>bin\Debug_ef6_net45\</OutputPath>
+    <DocumentationFile>bin\Debug_ef6_net45\\Effort.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug_ef6_net45|AnyCPU'">
     <Prefer32Bit>false</Prefer32Bit>
+    <OutputPath>bin\Debug_ef6_net40\</OutputPath>
+    <DocumentationFile>bin\Debug_ef6_net40\\Effort.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug_pre-ef6_net40|AnyCPU'">
     <Prefer32Bit>false</Prefer32Bit>
@@ -105,6 +110,11 @@
     <Compile Include="DataLoaders\ITableDataLoader.cs" />
     <Compile Include="DataLoaders\ITableDataLoaderFactory.cs" />
     <Compile Include="DataLoaders\TableDescription.cs" />
+    <Compile Include="DataLoaders\Xml\Extensions.cs" />
+    <Compile Include="DataLoaders\Xml\XmlDataLoader.cs" />
+    <Compile Include="DataLoaders\Xml\XmlFileReference.cs" />
+    <Compile Include="DataLoaders\Xml\XmlFileSource.cs" />
+    <Compile Include="DataLoaders\Xml\XmlTableDataLoaderFactory.cs" />
     <Compile Include="DbConnectionFactory.cs" />
     <Compile Include="Exceptions\EffortException.cs" />
     <Compile Include="Exceptions\ExceptionMessages.cs" />
@@ -371,9 +381,6 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="Effort-Next.nuspec" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
