@@ -13,8 +13,9 @@ namespace Effort.Test.Internal.WrapperProviders
     using System.Configuration;
     using System.Data;
     using System.Data.Common;
+    using System.Data.Entity.Core.Common;
 #if !EFOLD
-   // using System.Data.Entity.Core.Common;
+    // using System.Data.Entity.Core.Common;
 #endif
     using System.Diagnostics.Contracts;
     using System.Linq;
