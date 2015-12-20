@@ -6,7 +6,7 @@
     <title>Effort-Next</title>
     <authors>Dumont Cedric</authors>
     <owners>Dumont Cedric</owners>
-    <projectUrl></projectUrl>
+    <projectUrl>https://github.com/CedricDumont/effort</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Added Features to Effort project. so that it is immediatly available as nuget package before Pull requests...</description>
     <summary>Added Features to Effort project</summary>
