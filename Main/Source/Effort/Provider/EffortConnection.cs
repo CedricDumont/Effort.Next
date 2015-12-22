@@ -135,6 +135,7 @@ namespace Effort.Provider
             }
         }
 
+
         /// <summary>
         ///     Gets the internal <see cref="DbContainer" /> instance.
         /// </summary>
@@ -162,6 +163,11 @@ namespace Effort.Provider
             {
                 return EffortProviderFactory.Instance;
             }
+        }
+
+        public void LoadData(IDataLoader loader, bool cleanBeforeLoad = true)
+        {
+            //implementation to come...
         }
 
         /// <summary>
