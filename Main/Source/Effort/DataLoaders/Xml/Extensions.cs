@@ -9,9 +9,9 @@ using System.Xml.Linq;
 
 namespace Effort.DataLoaders.Xml
 {
-    public static class Extensions
+    internal static class Extensions
     {
-        public static XElement Element(this XElement element, XName name, bool ignoreCase)
+        internal static XElement Element(this XElement element, XName name, bool ignoreCase)
         {
             var el = element.Element(name);
             if (el != null)
@@ -24,7 +24,7 @@ namespace Effort.DataLoaders.Xml
             return elements.Count() == 0 ? null : elements.First();
         }
 
-        public static Stream AsStream(this string content)
+        internal static Stream AsStream(this string content)
         {
             if (content == null)
             {
@@ -46,7 +46,7 @@ namespace Effort.DataLoaders.Xml
 
         }
 
-        public static void RemoveLast(this StringBuilder sb)
+        internal static void RemoveLast(this StringBuilder sb)
         {
             if (sb.Length > 0)
             {
@@ -54,28 +54,6 @@ namespace Effort.DataLoaders.Xml
             }
         }
 
-        public static string EnclosedInXml(this object obj, string tag)
-        {
-            if (obj == null) { return ""; }
-            return "<" + tag + ">" + obj.ToString() + "</" + tag + ">";
-        }
-
-        public static string ReadFromStart(this Stream stream)
-        {
-            if (stream == null)
-            {
-                return null;
-            }
-            if (stream.CanRead && stream.CanSeek)
-            {
-                stream.Seek(0, SeekOrigin.Begin);
-            }
-
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                return reader.ReadToEnd();
-            }
-        }
 
 
 
