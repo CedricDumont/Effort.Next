@@ -83,6 +83,7 @@ namespace Effort.Next.Test
                 conn.LoadData(loader2);
                 using (SampleContext ctx = new SampleContext(conn))
                 {
+                    ctx.Authors.Local.Count.ShouldBe(0);
                     ctx.Authors.ToList().Count.ShouldBe(1);
                     ctx.Posts.ToList().Count.ShouldBe(1);
                 }
@@ -108,6 +109,30 @@ namespace Effort.Next.Test
 
           
 
+        }
+
+
+        [Fact]
+        public void ShouldLoadMultipleDataAndClearLocalContext()
+        {
+            // create the test file
+            string fileName1 = this.GetType().AssemblyDirectory() + "\\input\\test_1.xml";
+            string fileName2 = this.GetType().AssemblyDirectory() + "\\input\\test_2.xml";
+
+            IDataLoader loader1 = new XmlDataLoader(fileName1);
+            IDataLoader loader2 = new XmlDataLoader(fileName2);
+
+            using (EffortConnection conn = (EffortConnection)DbConnectionFactory.CreatePersistent("myConn", loader1))
+            {
+                //loader 1
+                using (SampleContext ctx = new SampleContext(conn))
+                {
+                    ctx.Authors.ToList().Count.ShouldBe(3);
+                    conn.LoadData(loader2);
+                    ctx.Authors.Local.Count.ShouldBe(0);
+                    ctx.Authors.ToList().Count.ShouldBe(1);
+                }
+            }
         }
     }
 
