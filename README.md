@@ -12,7 +12,8 @@ Documentation
 -------------
 for now, check the [XmlDataLoaderTest.cs](https://github.com/CedricDumont/Effort.Next/blob/develop/Main/Source/Effort.Next.Test/XmlDataLoaderTest.cs) Test class
 
-Available on Nuget : [Effort.Next](https://www.nuget.org/packages/Effort.Next)
+Nuget : [Effort.Next](https://www.nuget.org/packages/Effort.Next)
+--------------------------------------------------------------------
 
         PM> Install-Package Effort.Next -Pre
         
