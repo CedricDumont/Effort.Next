@@ -5,9 +5,12 @@ This is a fork of https://github.com/tamasflamich/effort to make my new implemen
 
 feature added
 -------------
-- Xml Data Loader (In Progress)
-- Refresh Data (instead of Transient) (In Progress)
-- Record Context : to make input and expected context available for unit testing. (Not Started)
+- Xml Data Loader 
+- Refresh Data (instead of Transient) 
+
+Documentation
+-------------
+for now, check the [XmlDataLoaderTest.cs](https://github.com/CedricDumont/Effort.Next/blob/develop/Main/Source/Effort.Next.Test/XmlDataLoaderTest.cs) Test class
 
 Available on Nuget : [Effort.Next](https://www.nuget.org/packages/Effort.Next)
 
