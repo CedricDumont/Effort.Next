@@ -6,7 +6,8 @@ This is a fork of https://github.com/tamasflamich/effort to make my new implemen
 feature added
 -------------
 - Xml Data Loader (In Progress)
-- Replay Context (Not Started)
+- Refresh Data (instead of Transient) (In Progress)
+- Record Context : to make input and expected context available for unit testing. (Not Started)
 
 Available on Nuget : [Effort.Next](https://www.nuget.org/packages/Effort.Next)
 
