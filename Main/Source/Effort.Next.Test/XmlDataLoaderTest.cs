@@ -23,6 +23,7 @@ namespace Effort.Next.Test
             using (SampleContext ctx = new SampleContext(DbConnectionFactory.CreateTransient(loader)))
             {
                 ctx.Authors.ToList().Count.ShouldBe(3);
+                ctx.Posts.ToList().Count.ShouldBe(3);
                 ctx.Authors.Where(a => a.Experience > 100).Count().ShouldBe(2);
             }
         }
