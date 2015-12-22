@@ -1,0 +1,40 @@
+﻿<Root>
+  <AUTHOR>
+    <AUT_ID>1</AUT_ID>
+    <AUT_FIRSTNAME>John</AUT_FIRSTNAME>
+    <AUT_LASTNAME>DOe</AUT_LASTNAME>
+    <AUT_EXPERIENCE>12</AUT_EXPERIENCE>
+  </AUTHOR>
+  <AUTHOR>
+    <AUT_ID>2</AUT_ID>
+    <AUT_FIRSTNAME>Albert</AUT_FIRSTNAME>
+    <AUT_LASTNAME>Einstein</AUT_LASTNAME>
+    <AUT_EXPERIENCE>150</AUT_EXPERIENCE>
+  </AUTHOR>
+  <AUTHOR>
+    <AUT_ID>3</AUT_ID>
+    <AUT_FIRSTNAME>Bart</AUT_FIRSTNAME>
+    <AUT_LASTNAME>Simpson</AUT_LASTNAME>
+    <AUT_EXPERIENCE>999</AUT_EXPERIENCE>
+  </AUTHOR>
+  <POST>
+    <Post_Id>1</Post_Id>
+    <Subject>First Text</Subject>
+    <Body>Some Text here</Body>
+    <AUT_ID>1</AUT_ID>
+  </POST>
+  <POST>
+    <Post_Id>2</Post_Id>
+    <Subject>Second Text</Subject>
+    <Body>Some other description</Body>
+    <DateCreated>4/05/2015 00:00:00</DateCreated>
+    <AUT_ID>2</AUT_ID>
+  </POST>
+  <POST>
+    <Post_Id>3</Post_Id>
+    <Subject>third Text</Subject>
+    <Body>some other third text</Body>
+    <DateCreated>6/04/2015 00:00:00</DateCreated>
+    <AUT_ID>2</AUT_ID>
+  </POST> 
+</Root>
