@@ -75,15 +75,16 @@ namespace Effort.Internal.DbManagement.Engine
 
         public void Initialize(IEnumerable<TEntity> entities)
         {
-            if (this.Indexes.Count() > 1)
-            {
-                throw new InvalidOperationException();
-            }
+            //TODO : check why this....
+            //if (this.Indexes.Count() > 1)
+            //{
+            //    throw new InvalidOperationException();
+            //}
 
-            if (this.PrimaryKeyIndex.Count > 0)
-            {
-                throw new InvalidOperationException();
-            }
+            //if (this.PrimaryKeyIndex.Count > 0)
+            //{
+            //    throw new InvalidOperationException();
+            //}
 
             foreach (TEntity entity in entities)
             {

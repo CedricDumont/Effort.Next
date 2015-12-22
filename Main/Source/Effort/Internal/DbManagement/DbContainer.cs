@@ -57,6 +57,8 @@ namespace Effort.Internal.DbManagement
 
         private ILogger logger;
         private ConcurrentDictionary<string, IStoredProcedure> transformCache;
+        Dictionary<string, TableInfoPair> _tables = new Dictionary<string, TableInfoPair>();
+
 
         public DbContainer(DbContainerParameters parameters)
         {
@@ -79,6 +81,14 @@ namespace Effort.Internal.DbManagement
                 }
 
                 return db; 
+            }
+        }
+
+        public DbContainerParameters Parameters
+        {
+            get
+            {
+                return this.parameters;
             }
         }
 
@@ -159,7 +169,7 @@ namespace Effort.Internal.DbManagement
             this.EnsureInitializedDatabase();
 
             // Temporary dictionary
-            Dictionary<string, ITable> tables = new Dictionary<string,ITable>();
+           // Dictionary<string, ITable> tables = new Dictionary<string,ITable>();
 
             this.Logger.Write("Creating tables...");
             partialTime.Restart();
@@ -173,7 +183,7 @@ namespace Effort.Internal.DbManagement
                     tableInfo.IdentityField,
                     tableInfo.ConstraintFactories);
 
-                tables.Add(tableInfo.TableName, table);
+                _tables.Add(tableInfo.TableName, new TableInfoPair(table, tableInfo));
             }
 
             this.Logger.Write(
@@ -182,21 +192,9 @@ namespace Effort.Internal.DbManagement
 
             this.Logger.Write("Adding initial data...");
             partialTime.Restart();
-            
+
             // Add initial data to the tables
-            using (ITableDataLoaderFactory loaderFactory = this.CreateDataLoaderFactory())
-            {
-                foreach (DbTableInfo tableInfo in schema.Tables)
-                { 
-                    // Get the table reference from the temporary dictionary
-                    ITable table = tables[tableInfo.TableName];
-
-                    // Return initial entity data and materialize them
-                    IEnumerable<object> data = ObjectLoader.Load(loaderFactory, tableInfo);
-
-                    DatabaseReflectionHelper.InitializeTableData(table, data);
-                }
-            }
+            LoadInitialData();
 
             this.Logger.Write(
                 "Initial data added in {0:0.0} ms",
@@ -207,7 +205,7 @@ namespace Effort.Internal.DbManagement
 
             foreach (DbTableInfo tableInfo in schema.Tables)
             {
-                ITable table = tables[tableInfo.TableName];
+                ITable table = _tables[tableInfo.TableName].Table;
 
                 foreach (IKeyInfo key in tableInfo.UniqueKeys)
                 {
@@ -241,6 +239,34 @@ namespace Effort.Internal.DbManagement
                 fullTime.Elapsed.TotalMilliseconds);
         }
 
+        public void LoadInitialData()
+        {
+
+            using (ITableDataLoaderFactory loaderFactory = this.CreateDataLoaderFactory())
+            {
+                var tableInfos = from e in _tables.Values select e.TableInfo;
+
+                foreach (DbTableInfo tableInfo in tableInfos)
+                {
+                    // Get the table reference from the temporary dictionary
+                    ITable table = _tables[tableInfo.TableName].Table;
+
+                    if (initializedTable.Contains(tableInfo.TableName))
+                    {
+                        continue;
+                    }
+                    initializedTable.Add(tableInfo.TableName);
+
+                    // Return initial entity data and materialize them
+                    IEnumerable<object> data = ObjectLoader.Load(loaderFactory, tableInfo);
+
+                    DatabaseReflectionHelper.InitializeTableData(table, data);
+                }
+            }
+        }
+
+        public IList<string> initializedTable = new List<string>();
+
         private void EnsureInitializedDatabase()
         {
             if (this.database == null)
@@ -262,5 +288,19 @@ namespace Effort.Internal.DbManagement
 
             return this.parameters.DataLoader.CreateTableDataLoaderFactory();
         }
+    }
+
+    //helper struct
+    internal class TableInfoPair
+    {
+        public TableInfoPair(ITable table, DbTableInfo tableInfo)
+        {
+            Table = table;
+            TableInfo = tableInfo;
+
+        }
+        public ITable Table { get; private set; }
+
+        public DbTableInfo TableInfo { get; private set; }
     }
 }

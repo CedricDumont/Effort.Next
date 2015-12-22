@@ -7,6 +7,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Xunit;
 using System.Linq;
 using Shouldly;
+using System.Data.Common;
+using Effort.Provider;
 
 namespace Effort.Next.Test
 {
@@ -16,7 +18,7 @@ namespace Effort.Next.Test
         public void ShouldCreateDatabaseFromXml_Transient()
         {
             // create the test file
-            string fileName = this.GetType().AssemblyDirectory() + "\\input\\test1_in.xml";
+            string fileName = this.GetType().AssemblyDirectory() + "\\input\\test_1.xml";
 
             IDataLoader loader = new CachingDataLoader(new XmlDataLoader(fileName));
 
@@ -32,7 +34,7 @@ namespace Effort.Next.Test
         public void ShouldCreateDatabaseFromXml_Persistent()
         {
             // create the test file
-            string fileName = this.GetType().AssemblyDirectory() + "\\input\\test1_in.xml";
+            string fileName = this.GetType().AssemblyDirectory() + "\\input\\test_1.xml";
 
             IDataLoader loader = new CachingDataLoader(new XmlDataLoader(fileName));
 
@@ -53,6 +55,59 @@ namespace Effort.Next.Test
             {
                 ctx.Authors.Where(a => a.FirstName == "FromTest").Count().ShouldBe(1);
             }
+        }
+
+        [Fact]
+        public void ShouldLoadMultipleData()
+        {
+            // create the test file
+            string fileName0 = this.GetType().AssemblyDirectory() + "\\input\\test_0.xml";
+            string fileName1 = this.GetType().AssemblyDirectory() + "\\input\\test_1.xml";
+            string fileName2 = this.GetType().AssemblyDirectory() + "\\input\\test_2.xml";
+
+            IDataLoader loader0 = new XmlDataLoader(fileName0);
+            IDataLoader loader1 = new XmlDataLoader(fileName1);
+            IDataLoader loader2 = new XmlDataLoader(fileName2);
+
+            using (EffortConnection conn = (EffortConnection)DbConnectionFactory.CreatePersistent("myConn", loader1))
+            {
+                //loader 1
+                using (SampleContext ctx = new SampleContext(conn))
+                {
+                    ctx.Authors.ToList().Count.ShouldBe(3);
+                    Author albert = (from a in ctx.Authors where a.FirstName == "Albert" select a).FirstOrDefault();
+                    albert.Posts.Count.ShouldBe(2);
+
+                }
+                //loader 2
+                conn.LoadData(loader2);
+                using (SampleContext ctx = new SampleContext(conn))
+                {
+                    ctx.Authors.ToList().Count.ShouldBe(1);
+                    ctx.Posts.ToList().Count.ShouldBe(1);
+                }
+
+                //loader 1 again
+                conn.LoadData(loader1);
+                using (SampleContext ctx = new SampleContext(conn))
+                {
+                    ctx.Authors.ToList().Count.ShouldBe(3);
+                    ctx.Posts.ToList().Count.ShouldBe(3);
+                    var albert = (from a in ctx.Authors where a.FirstName == "Albert" select a).FirstOrDefault();
+                    albert.Posts.Count.ShouldBe(2);
+                }
+
+                //loader 0 again
+                conn.LoadData(loader0);
+                using (SampleContext ctx = new SampleContext(conn))
+                {
+                    ctx.Authors.ToList().Count.ShouldBe(0);
+                    ctx.Posts.ToList().Count.ShouldBe(0);
+                }
+            }
+
+          
+
         }
     }
 

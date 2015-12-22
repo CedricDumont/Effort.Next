@@ -47,5 +47,10 @@ namespace Effort.Provider
         ///     Deletes all data from the database tables.
         /// </summary>
         void ClearTables();
+
+        /// <summary>
+        /// Setting it to false will temporary disable relations.
+        /// </summary>
+        bool EnforceConstraints { set; }
     }
 }

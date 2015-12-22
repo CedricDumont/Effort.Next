@@ -165,9 +165,22 @@ namespace Effort.Provider
             }
         }
 
-        public void LoadData(IDataLoader loader, bool cleanBeforeLoad = true)
+        public void LoadData(IDataLoader loader)
         {
-            //implementation to come...
+            //TODO : first implementation that need further analysis...
+            if (DbManager != null)
+            {
+                DbManager.EnforceConstraints = false;
+                DbManager.ClearTables();
+                DbContainer.initializedTable.Clear();
+                DbContainer.Parameters.DataLoader = loader;
+                DbContainer.LoadInitialData();
+                DbManager.EnforceConstraints = true;
+            }
+            else
+            {
+                throw new Exception("DbManager Not Initialized, you should first create a persistent EffortConnection");
+            }
         }
 
         /// <summary>
@@ -212,10 +225,11 @@ namespace Effort.Provider
         {
             get
             {
-                if (this.State != ConnectionState.Open)
-                {
-                    throw new InvalidOperationException();
-                }
+                //Why this... If I get the dbmanager, I will check after if it's open if needed....
+                //if (this.State != ConnectionState.Open)
+                //{
+                //    throw new InvalidOperationException();
+                //}
 
                 return this.containerConfiguration;
             }
@@ -240,7 +254,7 @@ namespace Effort.Provider
             }
 
             this.container = 
-                DbContainerStore.GetDbContainer(instanceId, this.CreateDbContainer);
+                DbContainerStore.GetDbContainer(instanceId, this.DBContainerFactoryMethod);
 
             this.containerConfiguration = new DbContainerManagerWrapper(this.container);
 
@@ -342,7 +356,7 @@ namespace Effort.Provider
             }
         }
 
-        private DbContainer CreateDbContainer()
+        private DbContainer DBContainerFactoryMethod()
         {
             EffortConnectionStringBuilder connectionString =
                 new EffortConnectionStringBuilder(this.ConnectionString);

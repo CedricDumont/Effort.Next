@@ -24,6 +24,7 @@
 
 namespace Effort.Internal.DbManagement
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Effort.Internal.Common;
@@ -35,6 +36,19 @@ namespace Effort.Internal.DbManagement
         private DbContainer container;
 
         private static readonly string MigrationHistoryTable = "__MigrationHistory";
+
+        public bool EnforceConstraints
+        {
+            set
+            {
+                var db = this.container.Internal;
+
+                foreach (var relation in db.Tables.GetAllRelations())
+                {
+                    relation.IsEnabled = value;
+                }
+            }
+        }
 
         public DbContainerManagerWrapper(DbContainer container)
         {
@@ -58,7 +72,7 @@ namespace Effort.Internal.DbManagement
             var db = this.container.Internal;
             var specialEntityTypes = GetEntityTypeNames(MigrationHistoryTable);
 
-            this.SetRelations(false);
+            EnforceConstraints = false;
 
             foreach (IExtendedTable table in db.Tables.GetAllTables())
             {
@@ -70,17 +84,7 @@ namespace Effort.Internal.DbManagement
                 table.Clear();
             }
 
-            this.SetRelations(true);
-        }
-
-        private void SetRelations(bool enabled)
-        {
-            var db = this.container.Internal;
-
-            foreach (var relation in db.Tables.GetAllRelations())
-            {
-                relation.IsEnabled = enabled;
-            }
+            EnforceConstraints = true;
         }
 
         private static List<string> GetEntityTypeNames(params string[] tableNames)
