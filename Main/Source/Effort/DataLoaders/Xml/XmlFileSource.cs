@@ -14,6 +14,8 @@ namespace Effort.DataLoaders.Xml
 
         private XElement xml ;
 
+        private XDocument xmlDoc;
+
         public XmlFileSource(string filePath)
         {
             FileInfo fi = new FileInfo(filePath);
@@ -26,7 +28,22 @@ namespace Effort.DataLoaders.Xml
                 //TODO : check here because the message is not correctly forwarded to test.
                 throw new Exception(filePath + " is not a valid file path");
             }
-            
+        }
+
+        public XmlFileSource(Stream stream)
+        {
+            if (stream != null)
+            {
+                stream.Position = 0;
+
+                xml = XElement.Load(stream);
+               // xml = xmlDoc.
+            }
+            else
+            {
+                //TODO : check here because the message is not correctly forwarded to test.
+                throw new ArgumentException("stream was null");
+            }
         }
 
 

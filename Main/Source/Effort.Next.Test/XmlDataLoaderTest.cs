@@ -9,6 +9,7 @@ using System.Linq;
 using Shouldly;
 using System.Data.Common;
 using Effort.Provider;
+using System.Xml.Linq;
 
 namespace Effort.Next.Test
 {
@@ -35,6 +36,14 @@ namespace Effort.Next.Test
         {
             // create the test file
             string fileName = this.GetType().AssemblyDirectory() + "\\input\\test_1.xml";
+
+            //XElement xml = XElement.Load(fileName);
+
+            //Stream s = fileName.AsStream();
+
+            //string s2 = s.ReadFromStart();
+
+            //xml = XElement.Load(fileName.AsStream());
 
             IDataLoader loader = new CachingDataLoader(new XmlDataLoader(fileName));
 

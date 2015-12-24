@@ -10,10 +10,17 @@ namespace Effort.DataLoaders.Xml
 {
     public class XmlDataLoader : IDataLoader
     {
-        private string path;
+        //TODO : Replace this with my Filerepository pattern, to be sure that stream are correctly closed.
+        private static IDictionary<string, Stream> _streamList = new Dictionary<string, Stream>();
 
         public XmlDataLoader()
         {
+        }
+
+        public XmlDataLoader(Stream stream)
+        {
+            InitStream(stream);
+           // this._stream = stream;
         }
 
         public XmlDataLoader(string path)
@@ -22,29 +29,22 @@ namespace Effort.DataLoaders.Xml
             {
                 throw new Exception("file does not exists : " + path);
             }
-            this.path = path;
+            //FileStream s = new FileStream()
+            Stream s = File.OpenRead(path);
+            InitStream(s);
+           // this._stream = path.AsStream();
         }
 
-        public string ContainerFolderPath
+        public void InitStream(Stream s)
         {
-            get
-            {
-                return this.path;
-            }
+            String key = Guid.NewGuid().ToString();
+            this.Argument = key;
+            _streamList.Add(key, s);
         }
 
-       
-        string IDataLoader.Argument
+        public string Argument
         {
-            get
-            {
-                return this.path;
-            }
-
-            set
-            {
-                this.path = value;
-            }
+            get; set;
         }
 
         /// <summary>
@@ -55,8 +55,9 @@ namespace Effort.DataLoaders.Xml
         /// </returns>
         public ITableDataLoaderFactory CreateTableDataLoaderFactory()
         {
+            Stream s = _streamList[Argument];
             
-            XmlFileSource source = new XmlFileSource(this.path);
+            XmlFileSource source = new XmlFileSource(s);
 
             return new XmlTableDataLoaderFactory(source);
         }
