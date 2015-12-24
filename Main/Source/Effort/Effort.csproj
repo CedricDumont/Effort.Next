@@ -88,6 +88,7 @@
     <Compile Include="DbConnectionFactory.cs" />
     <Compile Include="Exceptions\EffortException.cs" />
     <Compile Include="Exceptions\ExceptionMessages.cs" />
+    <Compile Include="Extensions\DbContextExtensions.cs" />
     <Compile Include="Internal\Caching\DataLoaderConfigurationLatchStore.cs" />
     <Compile Include="Internal\Caching\DataLoaderConfigurationLatch.cs" />
     <Compile Include="Internal\Caching\DataLoaderConfigurationKey.cs" />

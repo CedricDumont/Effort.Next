@@ -128,7 +128,7 @@ namespace Effort.Next.Test
                 using (SampleContext ctx = new SampleContext(conn))
                 {
                     ctx.Authors.ToList().Count.ShouldBe(3);
-                    conn.LoadData(loader2);
+                    ctx.RefreshContext(loader2);
                     ctx.Authors.Local.Count.ShouldBe(0);
                     ctx.Authors.ToList().Count.ShouldBe(1);
                 }
