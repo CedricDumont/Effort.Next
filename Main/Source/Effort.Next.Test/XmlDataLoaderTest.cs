@@ -38,7 +38,7 @@ namespace Effort.Next.Test
 
             IDataLoader loader = new CachingDataLoader(new XmlDataLoader(fileName));
 
-            using (SampleContext ctx = new SampleContext(DbConnectionFactory.CreatePersistent("myConn", loader)))
+            using (SampleContext ctx = new SampleContext(DbConnectionFactory.CreatePersistent("ShouldCreateDatabaseFromXml_Persistent", loader)))
             {
                 //ensure the author does not exist
                 ctx.Authors.Where(a => a.FirstName == "FromTest").Count().ShouldBe(0);
@@ -51,7 +51,7 @@ namespace Effort.Next.Test
             }
 
             //create a new context with same connection id
-            using (SampleContext ctx = new SampleContext(DbConnectionFactory.CreatePersistent("myConn")))
+            using (SampleContext ctx = new SampleContext(DbConnectionFactory.CreatePersistent("ShouldCreateDatabaseFromXml_Persistent")))
             {
                 ctx.Authors.Where(a => a.FirstName == "FromTest").Count().ShouldBe(1);
             }
@@ -69,7 +69,7 @@ namespace Effort.Next.Test
             IDataLoader loader1 = new XmlDataLoader(fileName1);
             IDataLoader loader2 = new XmlDataLoader(fileName2);
 
-            using (EffortConnection conn = (EffortConnection)DbConnectionFactory.CreatePersistent("myConn", loader1))
+            using (EffortConnection conn = (EffortConnection)DbConnectionFactory.CreatePersistent("ShouldLoadMultipleData", loader1))
             {
                 //loader 1
                 using (SampleContext ctx = new SampleContext(conn))
@@ -119,19 +119,32 @@ namespace Effort.Next.Test
             string fileName1 = this.GetType().AssemblyDirectory() + "\\input\\test_1.xml";
             string fileName2 = this.GetType().AssemblyDirectory() + "\\input\\test_2.xml";
 
-            IDataLoader loader1 = new XmlDataLoader(fileName1);
             IDataLoader loader2 = new XmlDataLoader(fileName2);
 
-            using (EffortConnection conn = (EffortConnection)DbConnectionFactory.CreatePersistent("myConn", loader1))
+            //loader 1
+            using (SampleContext ctx = DbContextFactory.CreateFromPersistent<SampleContext>("ShouldLoadMultipleDataAndClearLocalContext", fileName1))
             {
-                //loader 1
-                using (SampleContext ctx = new SampleContext(conn))
-                {
-                    ctx.Authors.ToList().Count.ShouldBe(3);
-                    ctx.RefreshContext(loader2);
-                    ctx.Authors.Local.Count.ShouldBe(0);
-                    ctx.Authors.ToList().Count.ShouldBe(1);
-                }
+                ctx.Authors.ToList().Count.ShouldBe(3);
+                ctx.RefreshContext(loader2);
+                ctx.Authors.Local.Count.ShouldBe(0);
+                ctx.Authors.ToList().Count.ShouldBe(1);
+            }
+        }
+
+        [Fact]
+        public void ShouldGetSameDataUsingPersistentFactoryExtension()
+        {
+            // create the test file
+            string fileName1 = this.GetType().AssemblyDirectory() + "\\input\\test_1.xml";
+
+            using (SampleContext ctx = DbContextFactory.CreateFromPersistent<SampleContext>("ShouldGetSameDataUsingPersistentFactoryExtension", fileName1))
+            {
+                ctx.Authors.ToList().Count.ShouldBe(3);
+            }
+
+            using (SampleContext ctx = DbContextFactory.CreateFromPersistent<SampleContext>("ShouldGetSameDataUsingPersistentFactoryExtension"))
+            {
+                ctx.Authors.ToList().Count.ShouldBe(3);
             }
         }
     }

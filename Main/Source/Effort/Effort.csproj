@@ -86,6 +86,7 @@
     <Compile Include="DataLoaders\Xml\XmlFileSource.cs" />
     <Compile Include="DataLoaders\Xml\XmlTableDataLoaderFactory.cs" />
     <Compile Include="DbConnectionFactory.cs" />
+    <Compile Include="DbContextFactory.cs" />
     <Compile Include="Exceptions\EffortException.cs" />
     <Compile Include="Exceptions\ExceptionMessages.cs" />
     <Compile Include="Extensions\DbContextExtensions.cs" />
