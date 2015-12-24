@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,26 @@ namespace Effort
             if (xmlfileName != null)
             {
                 loader = new CachingDataLoader(new XmlDataLoader(xmlfileName));
+            }
+            else
+            {
+                loader = new EmptyDataLoader();
+            }
+
+            DbConnection conn = DbConnectionFactory.CreatePersistent(connectionName, loader);
+
+            T instance = (T)Activator.CreateInstance(typeof(T), conn);
+
+            return instance;
+        }
+
+        public static T CreateFromPersistent<T>(string connectionName, Stream xmlStream = null) where T : DbContext
+        {
+            IDataLoader loader = null;
+
+            if (xmlStream != null)
+            {
+                loader = new CachingDataLoader(new XmlDataLoader(xmlStream));
             }
             else
             {
