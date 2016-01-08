@@ -13,45 +13,48 @@ namespace Effort
 {
     public static class DbContextFactory
     {
-        //TODO  instead of filename, give  a kind of data content type.... application/xml or application/csv...
-        public static T CreateFromPersistent<T>(string connectionName, string xmlfileName = null) where T : DbContext
+        public static T CreateFromPersistent<T>(string connectionName, string xmlfileName) where T : DbContext
         {
-            IDataLoader loader = null;
+            IDataLoader loader = xmlfileName == null ? null : new CachingDataLoader(new XmlDataLoader(xmlfileName));
 
-            if (xmlfileName != null)
+            return CreateFromPersistent<T>(connectionName, loader);
+        }
+
+        public static T CreateFromPersistent<T>(string connectionName, Stream xmlStream) where T : DbContext
+        {
+            IDataLoader loader = xmlStream == null ? null : new CachingDataLoader(new XmlDataLoader(xmlStream));
+
+            return CreateFromPersistent<T>(connectionName, loader);
+        }
+
+        public static T CreateFromPersistent<T>(string connectionName, IDataLoader loader = null) where T : DbContext
+        {
+            DbConnection conn = null;
+
+            if (loader == null)
             {
-                loader = new CachingDataLoader(new XmlDataLoader(xmlfileName));
+                conn = DbConnectionFactory.CreatePersistent(connectionName, new EmptyDataLoader());
             }
             else
             {
-                loader = new EmptyDataLoader();
+                conn = DbConnectionFactory.CreatePersistent(connectionName);
             }
 
-            DbConnection conn = DbConnectionFactory.CreatePersistent(connectionName, loader);
-
             T instance = (T)Activator.CreateInstance(typeof(T), conn);
+
+            if (!instance.Database.Exists())
+            {
+                instance.Database.Create();
+            }
+
+            if (loader != null)
+            {
+                instance.RefreshContext(loader);
+            }
 
             return instance;
         }
 
-        public static T CreateFromPersistent<T>(string connectionName, Stream xmlStream = null) where T : DbContext
-        {
-            IDataLoader loader = null;
-
-            if (xmlStream != null)
-            {
-                loader = new CachingDataLoader(new XmlDataLoader(xmlStream));
-            }
-            else
-            {
-                loader = new EmptyDataLoader();
-            }
-
-            DbConnection conn = DbConnectionFactory.CreatePersistent(connectionName, loader);
-
-            T instance = (T)Activator.CreateInstance(typeof(T), conn);
-
-            return instance;
-        }
+      
     }
 }

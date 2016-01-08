@@ -140,6 +140,25 @@ namespace Effort.Next.Test
             }
         }
 
+        [Theory(DisplayName = "ShouldLoadMultipleDataWithTheory")]
+        [InlineData("test_1.xml", 3)]
+        [InlineData("test_2.xml", 1)]
+        [InlineData("test_0.xml", 0)]
+        public void ShouldLoadMultipleDataWithTheory(string fileName, int authorCount)
+        {
+            // create the test file
+            string filePath = this.GetType().AssemblyDirectory() + "\\input\\"+ fileName;
+
+           // IDataLoader loader = new XmlDataLoader(filePath);
+
+            //loader 1
+            using (SampleContext ctx = DbContextFactory.CreateFromPersistent<SampleContext>("ShouldLoadMultipleDataAndClearLocalContext", filePath))
+            {
+                //ctx.RefreshContext(loader);
+                ctx.Authors.ToList().Count.ShouldBe(authorCount);
+            }
+        }
+
         [Fact]
         public void ShouldGetSameDataUsingPersistentFactoryExtension()
         {
