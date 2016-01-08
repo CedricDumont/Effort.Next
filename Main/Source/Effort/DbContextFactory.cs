@@ -11,33 +11,62 @@ using Effort.DataLoaders.Xml;
 
 namespace Effort
 {
-    public static class DbContextFactory
+    public enum ConnectionBehaviour
     {
-        public static T CreateFromPersistent<T>(string connectionName, string xmlfileName) where T : DbContext
+        Persistent,
+        Transient
+    }
+
+    public static class DbContextFactory<T> where T : DbContext
+    {
+        /// <summary>
+        /// Creates a DbContext of type T with a Transient connection behaviour
+        /// </summary>
+        /// <returns></returns>
+        public static T Create()
+        {
+            return CreateInternal();
+        }
+
+        public static T Create(string xmlfileName, ConnectionBehaviour connectionBehaviour = ConnectionBehaviour.Transient, string connectionId = null)
         {
             IDataLoader loader = xmlfileName == null ? null : new CachingDataLoader(new XmlDataLoader(xmlfileName));
 
-            return CreateFromPersistent<T>(connectionName, loader);
+            return CreateInternal(loader, connectionBehaviour, connectionId);
         }
 
-        public static T CreateFromPersistent<T>(string connectionName, Stream xmlStream) where T : DbContext
+        public static T Create(Stream xmlStream, ConnectionBehaviour connectionBehaviour = ConnectionBehaviour.Transient, string connectionId = null)
         {
             IDataLoader loader = xmlStream == null ? null : new CachingDataLoader(new XmlDataLoader(xmlStream));
 
-            return CreateFromPersistent<T>(connectionName, loader);
+            return CreateInternal(loader, connectionBehaviour, connectionId);
         }
 
-        public static T CreateFromPersistent<T>(string connectionName, IDataLoader loader = null) where T : DbContext
+        public static T Create(IDataLoader loader, ConnectionBehaviour connectionBehaviour = ConnectionBehaviour.Transient, string connectionId = null)
         {
+            return CreateInternal(loader, connectionBehaviour, connectionId);
+        }
+
+        private static T CreateInternal(
+                    IDataLoader loader = null,
+                    ConnectionBehaviour connectionBehaviour = ConnectionBehaviour.Transient,
+                    string connectionId = null)
+        {
+            //preconditions
+            if (connectionBehaviour == ConnectionBehaviour.Persistent && connectionId == null)
+            {
+                throw new ArgumentException($"USAGE : A {nameof(connectionId)} must be provided if {ConnectionBehaviour.Transient.ToString()} is used ");
+            }
+
             DbConnection conn = null;
 
-            if (loader == null)
+            if (connectionBehaviour == ConnectionBehaviour.Persistent)
             {
-                conn = DbConnectionFactory.CreatePersistent(connectionName, new EmptyDataLoader());
+                conn = DbConnectionFactory.CreatePersistent(connectionId);
             }
             else
             {
-                conn = DbConnectionFactory.CreatePersistent(connectionName);
+                conn = DbConnectionFactory.CreateTransient(loader);
             }
 
             T instance = (T)Activator.CreateInstance(typeof(T), conn);
@@ -47,14 +76,12 @@ namespace Effort
                 instance.Database.Create();
             }
 
-            if (loader != null)
+            if (loader != null && connectionBehaviour == ConnectionBehaviour.Persistent)
             {
                 instance.RefreshContext(loader);
             }
 
             return instance;
         }
-
-      
     }
 }
