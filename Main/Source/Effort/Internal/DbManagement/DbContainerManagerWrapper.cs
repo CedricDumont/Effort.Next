@@ -30,6 +30,7 @@ namespace Effort.Internal.DbManagement
     using Effort.Internal.Common;
     using Effort.Internal.DbManagement.Engine;
     using Effort.Provider;
+    using NMemory.Tables;
 
     internal class DbContainerManagerWrapper : IDbManager
     {

@@ -174,6 +174,32 @@ namespace Effort.Next.Test
         }
 
         [Fact]
+        public void ShouldResetIdsWithPersistentConnection()
+        {
+            // create the test file
+            string fileName1 = this.GetType().AssemblyDirectory() + "\\reset-ids\\test_1.xml";
+
+            using (SampleContext ctx = DbContextFactory<SampleContext>.Create(fileName1, ConnectionBehaviour.Persistent, "ShouldResetIdsWithPersistentConnection"))
+            {
+                ctx.Posts.Count().ShouldBe(1);
+                ctx.Posts.First().Id.ShouldBe(300); // 300 is in the xml file
+
+            }
+            string fileName2 = this.GetType().AssemblyDirectory() + "\\reset-ids\\test_2.xml";
+
+            using (SampleContext ctx = DbContextFactory<SampleContext>.Create(fileName2, ConnectionBehaviour.Persistent, "ShouldResetIdsWithPersistentConnection"))
+            {
+                ctx.Posts.Count().ShouldBe(0);
+                var newPost = new Post() { AutId = 3, Body = "some text" };
+                ctx.Posts.Add(newPost);
+                ctx.SaveChanges();
+                ctx.Posts.Count().ShouldBe(1);
+                ctx.Posts.First().Id.ShouldBe(1);
+
+            }
+        }
+
+        [Fact]
         public void ShouldGetEmptyDataUsingTransientBehaviour()
         {
             // create the test file

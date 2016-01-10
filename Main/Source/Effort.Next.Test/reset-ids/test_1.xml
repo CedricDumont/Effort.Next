@@ -1,0 +1,14 @@
+﻿<Root>
+  <AUTHOR>
+    <AUT_ID>1</AUT_ID>
+    <AUT_FIRSTNAME>Dark</AUT_FIRSTNAME>
+    <AUT_LASTNAME>Vador</AUT_LASTNAME>
+    <AUT_EXPERIENCE>999</AUT_EXPERIENCE>
+  </AUTHOR>
+  <POST>
+    <Post_Id>300</Post_Id>
+    <Subject>May The force be with you</Subject>
+    <Body>The dark side of the force.....</Body>
+    <AUT_ID>4</AUT_ID>
+  </POST>
+</Root>

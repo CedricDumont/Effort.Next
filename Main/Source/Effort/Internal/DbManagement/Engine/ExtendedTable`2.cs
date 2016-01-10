@@ -86,17 +86,21 @@ namespace Effort.Internal.DbManagement.Engine
             //    throw new InvalidOperationException();
             //}
 
+            var indexes = this.Indexes;
+
             foreach (TEntity entity in entities)
             {
                 this.PrimaryKeyIndex.Insert(entity);
             }
 
+
             this.CalculateIdentityFeed();
         }
 
+        //Clears the table and resets the seed
         public void Clear()
         {
-            NMemory.Linq.QueryableEx.Delete(this);
+            this.Clear(true);            
         }
 
         protected override void InsertCore(TEntity entity, Transaction transaction)
